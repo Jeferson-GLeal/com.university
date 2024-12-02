@@ -1,5 +1,6 @@
 package com.university.authuser.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.university.authuser.dtos.UserDto;
 import com.university.authuser.enums.UserStatus;
 import com.university.authuser.enums.UserType;
@@ -23,7 +24,8 @@ public class AuthenticationController {
     UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> registerUser(@RequestBody
+                                                   @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto) {
 
         if (userService.existsByUserName(userDto.getUserName())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is Already Taken!");
