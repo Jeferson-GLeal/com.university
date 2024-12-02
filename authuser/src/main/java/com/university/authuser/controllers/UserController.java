@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.university.authuser.dtos.UserDto;
 import com.university.authuser.models.UserModel;
 import com.university.authuser.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,9 +22,10 @@ import java.util.UUID;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController {
+    private static final String USER_NOT_FOUND = "User Not Found!";
 
-    @Autowired
     UserService userService;
 
     @GetMapping
@@ -40,7 +41,7 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (!userModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
         }
@@ -51,7 +52,7 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (!userModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
         } else {
             userService.delete(userModelOptional.get());
             return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
@@ -65,7 +66,7 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (!userModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
         } else {
             var userModel = userModelOptional.get();
             userModel.setFullName(userDto.getFullName());
@@ -84,9 +85,9 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (!userModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
 
-        } if (!userModelOptional.get().getPassword().equals(userDto.getOldPassword())){
+        } else if (!userModelOptional.get().getPassword().equals(userDto.getOldPassword())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password!");
 
         } else {
@@ -105,7 +106,7 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (!userModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(USER_NOT_FOUND);
 
         } else {
             var userModel = userModelOptional.get();
