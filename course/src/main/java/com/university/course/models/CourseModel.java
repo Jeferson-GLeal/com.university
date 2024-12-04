@@ -3,6 +3,7 @@ package com.university.course.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.university.course.enums.CourseLevel;
 import com.university.course.enums.CourseStatus;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -51,4 +53,8 @@ public class CourseModel implements Serializable {
 
     @Column(nullable = false)
     private UUID userInstructor;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "course")
+    private Set<ModuleModel> modules;
 }
