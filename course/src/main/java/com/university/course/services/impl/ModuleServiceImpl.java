@@ -39,6 +39,6 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId) {
-        return Optional.empty();
+        return moduleRepository.findModuleIntoCourse(courseId, moduleId);
     }
 }
