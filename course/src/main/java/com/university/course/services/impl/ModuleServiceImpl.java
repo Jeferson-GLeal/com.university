@@ -37,5 +37,8 @@ public class ModuleServiceImpl implements ModuleService {
         return moduleRepository.save(moduleModel);
     }
 
-
+    @Override
+    public Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId) {
+        return Optional.empty();
+    }
 }

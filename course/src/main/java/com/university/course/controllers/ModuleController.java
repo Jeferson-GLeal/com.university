@@ -1,6 +1,5 @@
 package com.university.course.controllers;
 
-import com.university.course.dtos.CourseDto;
 import com.university.course.dtos.ModuleDto;
 import com.university.course.models.CourseModel;
 import com.university.course.models.ModuleModel;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,5 +41,17 @@ public class ModuleController {
         moduleModel.setCourse(courseModelOptional.get());
         return ResponseEntity.status(HttpStatus.CREATED).body(moduleService.save(moduleModel));
 
+    }
+
+    @DeleteMapping("/courses/{courseId}/modules/{moduleId}")
+    public ResponseEntity<Object> deleteModule(@PathVariable(value = "courseId") UUID courseId,
+                                               @PathVariable(value = "moduleId") UUID moduleId) {
+
+        Optional<ModuleModel> moduleModelOptional = moduleService.findModuleIntoCourse(courseId, moduleId);
+        if (!moduleModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Module not found for this course!");
+        }
+        moduleService.delete(moduleModelOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Module deleted successfully!");
     }
 }
