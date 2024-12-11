@@ -6,12 +6,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class ModuleDto {
+public class LessonDto{
 
     @NotBlank
     private String title;
-    @NotBlank
     private String description;
-
-
+    @NotBlank
+    private String videoUrl;
 }
